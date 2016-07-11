@@ -64,6 +64,17 @@ def get_document():
 
     return render_template('metadata.html', doc=doc)
 
+@app.route('/listNotes')
+def list_notes():
+    if 'token' not in session:
+        return redirect('/')
+
+    mendeley_session = get_session_from_cookies()
+
+    name = mendeley_session.profiles.me.display_name
+    notes = mendeley_session.annotations.list().items
+
+    return render_template('notes.html', name=name, notes=notes)
 
 @app.route('/metadataLookup')
 def metadata_lookup():
